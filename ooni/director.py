@@ -8,7 +8,7 @@ from ooni.utils.net import randomFreePort
 from ooni.nettest import NetTest, getNetTestInformation
 from ooni.settings import config
 from ooni import errors
-from ooni.nettest import test_class_name_to_name
+from ooni.nettest import normaliseTestName
 
 from txtorcon import TorConfig, TorState, launch_tor, build_tor_connection
 
@@ -136,7 +136,7 @@ class Director(object):
                 log.msg("Connecting to Tor Control Port...")
                 yield self.getTorState()
 
-        if config.global_options['no-geoip']:
+        if config.global_options.get('no-geoip'):
             aux = [False]
             if config.global_options.get('annotations') is not None:
                 annotations = [k.lower() for k in config.global_options['annotations'].keys()]
@@ -198,7 +198,7 @@ class Director(object):
         self.totalMeasurementRuntime += measurement.runtime
         self.successfulMeasurements += 1
         measurement.result = result
-        test_name = test_class_name_to_name(measurement.testInstance.name)
+        test_name = normaliseTestName(measurement.testInstance.name)
         if test_name in self.sniffers:
             sniffer = self.sniffers[test_name]
             config.scapyFactory.unRegisterProtocol(sniffer)
