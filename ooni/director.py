@@ -8,7 +8,7 @@ from ooni.utils.net import randomFreePort
 from ooni.nettest import NetTest, getNetTestInformation
 from ooni.settings import config
 from ooni import errors
-from ooni.nettest import normaliseTestName
+from ooni.nettest import normalizeTestName
 
 from txtorcon import TorConfig, TorState, launch_tor, build_tor_connection
 
@@ -198,7 +198,7 @@ class Director(object):
         self.totalMeasurementRuntime += measurement.runtime
         self.successfulMeasurements += 1
         measurement.result = result
-        test_name = normaliseTestName(measurement.testInstance.name)
+        test_name = normalizeTestName(measurement.testInstance.name)
         if test_name in self.sniffers:
             sniffer = self.sniffers[test_name]
             config.scapyFactory.unRegisterProtocol(sniffer)
